@@ -43,15 +43,16 @@ while True:
     gray=cv2.cvtColor(result,cv2.COLOR_BGR2GRAY)
     ret,threso=cv2.threshold(gray,0,255,cv2.THRESH_BINARY)
 
-    ret=True
-
     #Contour detection and largest contour
     contours,heirarchy=cv2.findContours(threso,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-    areaOI=max(contours,key=cv2.contourArea)
 
+   if len(contours)>0:
+    areaOI=max(contours,key=cv2.contourArea)
     #Adding Bbox around it
     x,y,w,h=cv2.boundingRect(areaOI)
     rect=cv2.rectangle(result,(x,y),(x+w,y+h),(0,255,0),4)
+   else:
+      print("No contours detected")
 
     cv2.imshow('Final_Result',rect)
     if cv2.waitKey(20)==ord('q'):
